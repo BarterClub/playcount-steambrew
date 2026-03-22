@@ -1,11 +1,8 @@
 {
-  "name": "PlayCount",
-  "author": "itsOwen",
-  "api_version": 1,
-  "flags": [],
-  "publish": {
-    "tags": ["Steam Charts", "Player Count", "SteamDB", "Currently Playing"],
-    "description": "A Steam Deck plugin that shows current player counts for your steam games.",
-    "image": "https://raw.githubusercontent.com/itsOwen/playcount-decky/refs/heads/main/assets/PlayCount-main.png"
-  }
+  "$schema": "https://raw.githubusercontent.com/SteamClientHomebrew/Millennium/main/src/sys/plugin-schema.json",
+  "name": "playcount",
+  "common_name": "Player Count",
+  "description": "Shows current player counts for your Steam games.",
+  "version": "1.0.0",
+  "backendType": "lua"
 }

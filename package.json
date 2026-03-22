@@ -1,41 +1,20 @@
 {
-  "name": "playcount-decky",
-  "version": "1.7",
-  "description": "A Steam Deck plugin that shows current player counts for your steam games.",
+  "name": "playcount",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "build": "rollup -c",
-    "watch": "rollup -c -w"
-  },
-  "keywords": [
-    "decky",
-    "plugin",
-    "steam-deck",
-    "deck"
-  ],
-  "author": "itsOwen",
-  "license": "BSD-3-Clause",
-  "devDependencies": {
-    "@decky/rollup": "^1.0.2",
-    "@decky/ui": "^4.11.1",
-    "@types/react": "18.3.12",
-    "@types/react-dom": "18.3.1",
-    "@types/webpack": "^5.28.5",
-    "rollup": "^4.29.1",
-    "typescript": "^5.9.3"
+    "dev": "millennium-ttc --build dev",
+    "watch": "millennium-ttc --build dev --watch",
+    "build": "millennium-ttc --build prod"
   },
   "dependencies": {
-    "@decky/api": "^1.1.3",
-    "react-icons": "^5.5.0",
-    "recharts": "^2.15.0",
-    "tslib": "^2.8.1"
+    "@steambrew/api": "^5.5.3",
+    "@steambrew/client": "^5.5.3",
+    "@steambrew/ttc": "^2.7.3",
+    "@steambrew/webkit": "^5.5.3"
   },
-  "pnpm": {
-    "peerDependencyRules": {
-      "ignoreMissing": [
-        "react",
-        "react-dom"
-      ]
-    }
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "typescript": "^5.0.0"
   }
 }
