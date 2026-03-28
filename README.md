@@ -1,90 +1,65 @@
-# Player Count for Steam 🎮
+# PlayCount for Millennium (Steam Desktop)
 
-A [Millennium](https://steambrew.app/) plugin that displays real-time player counts for your Steam games. Ported from [playcount-decky](https://github.com/itsOwen/playcount-decky) (Steam Deck / Decky Loader) to the desktop Steam client.
+A port of [playcount-decky](https://github.com/itsOwen/playcount-decky) from Decky Loader (Steam Deck) to **Millennium** (Desktop Steam Client via [steambrew.app](https://steambrew.app/)).
+
+Shows real-time player counts for your Steam games in the library and store.
 
 ## Features
 
-- **Live Player Count Badge** — Appears on game pages in your Steam library
-- **Color-Coded Status** — Badge color changes based on player count (green → blue → silver → gold → red)
-- **Click to View SteamCharts** — Click the badge to open the SteamCharts page for that game
-- **Customizable** — Adjust position, alignment, and offsets via the settings panel
+- Live player count badge on library game pages
+- Player count on Steam Store pages
+- Detailed stats modal (24h peak, 7/30-day averages, trends)
+- Interactive charts via Recharts
+- Customizable badge position, size, colors, and icons
+- Cached data to reduce API calls
 
-## Installation
-
-### Prerequisites
+## Prerequisites
 
 - [Millennium](https://github.com/SteamClientHomebrew/Millennium) installed (alpha/beta channel for Lua plugin support)
+- Node.js 18+ and pnpm (or npm)
 
-### From Release
-
-1. Download the latest release zip from the [Releases](https://github.com/BarterClub/playcount-steambrew/releases) page
-2. Extract the `PlayerCount` folder into your Steam plugins directory:
-   - **Windows:** `C:\Program Files (x86)\Steam\plugins\`
-   - **Linux:** `~/.local/share/millennium/plugins/`
-3. Open Steam → **Millennium** → **Plugins**, enable **Player Count**
-4. Click **Save Changes** and restart Steam
-
-### From Source
+## Setup & Building
 
 ```bash
-git clone https://github.com/BarterClub/playcount-steambrew.git
-cd playcount-steambrew
-npm install
-npm run build
+# Clone or copy this folder
+cd playcount-millennium
+
+# Install dependencies
+pnpm install
+# or: npm install
+
+# Build for development (with source maps)
+pnpm run dev
+# or: npm run dev
+
+# Build for production
+pnpm run build
+# or: npm run build
 ```
 
-Then copy the built plugin (the folder containing `.millennium/Dist/`, `backend/`, and `plugin.json`) into your plugins directory.
+## Installing
 
-## Settings
+1. Copy (or symlink) the entire `playcount-millennium` folder into your Millennium plugins directory:
+   - **Windows:** `C:\Program Files (x86)\Steam\plugins\playcount`
+   - **Linux:** `~/.local/share/millennium/plugins/playcount`
 
-Access settings via **Steam → Millennium → Player Count**:
+2. Open Steam, go to **Steam → Millennium → Plugins**, and enable **PlayCount**.
 
-| Setting | Default | Description |
-|---------|---------|-------------|
-| Show Player Count | On | Toggle the badge on/off |
-| Align to Right | On | Position badge on the right side of the header |
-| Horizontal Offset | 0px | Distance from the aligned edge |
-| Vertical Offset | 0px | Distance from the top |
+3. Click **Save Changes** and restart Steam.
 
-## Project Structure
+## Architecture Changes from Decky Version
 
-```
-├── frontend/                 # TypeScript frontend (runs in Steam UI)
-│   ├── index.tsx             # Plugin entry point (definePlugin)
-│   ├── services/
-│   │   ├── api.ts            # Steam API calls via Lua backend
-│   │   ├── logger.ts         # Console logging
-│   │   └── settings.ts       # Settings persistence
-│   ├── display/
-│   │   ├── badge.ts          # Player count badge (plain DOM)
-│   │   └── styles.ts         # CSS injection
-│   └── injection/
-│       ├── detector.ts       # Game page detection
-│       └── observer.ts       # MutationObserver setup
-├── backend/
-│   └── main.lua              # Lua backend (HTTP requests via callable)
-├── webkit/
-│   └── index.tsx             # Webkit module (minimal)
-├── types/                    # Lua type definitions
-├── plugin.json               # Millennium plugin manifest
-├── package.json              # Node dependencies
-└── tsconfig.json             # TypeScript config
-```
-
-## How It Works
-
-1. **Window Hook** — `Millennium.AddWindowCreateHook` detects when Steam windows are created
-2. **MutationObserver** — Watches for DOM changes to detect game page navigation
-3. **Detection** — Reads `MainWindowBrowserManager.m_lastLocation.pathname` to extract the app ID
-4. **Lua Backend** — Frontend calls `fetch_player_count` via `callable()`, which makes the HTTP request to Steam's API server-side
-5. **Badge Injection** — Injects a styled HTML badge into the game header container
+| Aspect | Decky (Steam Deck) | Millennium (Desktop) |
+|--------|-------------------|---------------------|
+| Package imports | `@decky/ui`, `@decky/api` | `@steambrew/client` |
+| HTTP requests | `fetchNoCors()` | Lua backend via `callable()` |
+| Backend language | Python | Lua |
+| Build system | Rollup (`@decky/rollup`) | `millennium-ttc` |
+| Plugin config | `plugin.json` (Decky schema) | `plugin.json` (Millennium schema) |
+| Plugin structure | `src/index.tsx` | `frontend/index.tsx` + `backend/main.lua` |
 
 ## Credits
 
-- Original Decky plugin by [itsOwen](https://github.com/itsOwen/playcount-decky)
+- Original plugin by [itsOwen](https://github.com/itsOwen/playcount-decky)
 - [Millennium](https://github.com/SteamClientHomebrew/Millennium) by SteamClientHomebrew
-- [HLTB for Millennium](https://github.com/jcdoll/hltb-millennium-plugin) — reference for Millennium plugin architecture
-
-## License
-
-BSD-3-Clause — see [LICENSE](LICENSE)
+- License: BSD-3-Clause (same as original)
