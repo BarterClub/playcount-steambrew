@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { definePlugin, Millennium, IconsModule, Field, DialogButton } from '@steambrew/client';
+import { definePlugin, Millennium, IconsModule, ToggleField, SliderField } from '@steambrew/client';
 import { log } from './services/logger';
 import { initSettings, getSettings, saveSettings } from './services/settings';
 import { setupObserver, disconnectObserver, cleanupAll, refreshDisplay } from './injection/observer';
@@ -34,63 +34,56 @@ const SettingsContent = () => {
     if (currentDocument) refreshDisplay(currentDocument);
   };
 
-  const onHorizontalOffsetChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
+  const onHorizontalOffsetChange = (value: number) => {
     setHorizontalOffset(value);
-    const num = parseInt(value, 10);
-    if (!isNaN(num)) {
-      saveSettings({ ...getSettings(), horizontalOffset: num });
-      if (currentDocument) refreshDisplay(currentDocument);
-    }
+    saveSettings({ ...getSettings(), horizontalOffset: value });
+    if (currentDocument) refreshDisplay(currentDocument);
   };
 
-  const onVerticalOffsetChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
+  const onVerticalOffsetChange = (value: number) => {
     setVerticalOffset(value);
-    const num = parseInt(value, 10);
-    if (!isNaN(num)) {
-      saveSettings({ ...getSettings(), verticalOffset: num });
-      if (currentDocument) refreshDisplay(currentDocument);
-    }
+    saveSettings({ ...getSettings(), verticalOffset: value });
+    if (currentDocument) refreshDisplay(currentDocument);
   };
 
   return (
     <>
-      <Field label="Show Player Count" description="Display live player count on game pages" bottomSeparator="standard">
-        <input
-          type="checkbox"
-          checked={showBadge}
-          onChange={(e) => onShowBadgeChange(e.target.checked)}
-          style={{ width: '20px', height: '20px' }}
-        />
-      </Field>
-      <Field label="Align to Right" description="Position badge on the right side" bottomSeparator="standard">
-        <input
-          type="checkbox"
-          checked={alignRight}
-          onChange={(e) => onAlignRightChange(e.target.checked)}
-          style={{ width: '20px', height: '20px' }}
-        />
-      </Field>
-      <Field label="Horizontal Offset (px)" description="Distance from edge" bottomSeparator="standard">
-        <input
-          type="number"
-          value={horizontalOffset}
-          onChange={onHorizontalOffsetChange}
-          style={{ width: '60px', padding: '4px 8px' }}
-        />
-      </Field>
-      <Field label="Vertical Offset (px)" description="Distance from top" bottomSeparator="standard">
-        <input
-          type="number"
-          value={verticalOffset}
-          onChange={onVerticalOffsetChange}
-          style={{ width: '60px', padding: '4px 8px' }}
-        />
-      </Field>
-      <div style={{ fontSize: '11px', color: '#8f98a0', padding: '8px 0' }}>
-        Click the badge to open SteamCharts for that game.
-      </div>
+      <ToggleField
+        label="Show Player Count"
+        description="Display live player count on game pages"
+        checked={showBadge}
+        onChange={onShowBadgeChange}
+        bottomSeparator="standard"
+      />
+      <ToggleField
+        label="Align to Right"
+        description="Position badge on the right side"
+        checked={alignRight}
+        onChange={onAlignRightChange}
+        bottomSeparator="standard"
+      />
+      <SliderField
+        label="Horizontal Offset (px)"
+        description="Distance from edge"
+        value={horizontalOffset}
+        min={-100}
+        max={200}
+        step={1}
+        onChange={onHorizontalOffsetChange}
+        showValue={true}
+        bottomSeparator="standard"
+      />
+      <SliderField
+        label="Vertical Offset (px)"
+        description="Distance from top"
+        value={verticalOffset}
+        min={-100}
+        max={200}
+        step={1}
+        onChange={onVerticalOffsetChange}
+        showValue={true}
+        bottomSeparator="standard"
+      />
     </>
   );
 };
