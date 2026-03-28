@@ -3,6 +3,6 @@
   "name": "playcount",
   "common_name": "Player Count",
   "description": "Shows current player counts for your Steam games.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "backendType": "lua"
 }
