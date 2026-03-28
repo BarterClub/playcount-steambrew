@@ -11,15 +11,15 @@ let currentDocument: Document | undefined;
 const SettingsContent = () => {
   const [showBadge, setShowBadge] = useState(true);
   const [alignRight, setAlignRight] = useState(true);
-  const [horizontalOffset, setHorizontalOffset] = useState('0');
-  const [verticalOffset, setVerticalOffset] = useState('0');
+  const [horizontalOffset, setHorizontalOffset] = useState(0);
+  const [verticalOffset, setVerticalOffset] = useState(0);
 
   useEffect(() => {
     const settings = getSettings();
     setShowBadge(settings.showBadge);
     setAlignRight(settings.alignRight);
-    setHorizontalOffset(String(settings.horizontalOffset));
-    setVerticalOffset(String(settings.verticalOffset));
+    setHorizontalOffset(settings.horizontalOffset);
+    setVerticalOffset(settings.verticalOffset);
   }, []);
 
   const onShowBadgeChange = (checked: boolean) => {
